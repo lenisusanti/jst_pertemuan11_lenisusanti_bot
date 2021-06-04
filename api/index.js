@@ -55,14 +55,18 @@ bot.on('message', (msg) => {
                      msg.chat.id,
                      `Klasifikasi tegangan ${jres2}`
             );   
+            state = 0;
             })           
  })
 }else{
-    state = 0
+    bot.sendMessage(
+    msg.chat.id,
+    `Pliease click /start`
+            );   
+    state = 0;
 }
 })
  
-
 // routers
 r.get('/prediction/:i/:r', function(req, res, next) {    
     model.predict(
@@ -91,7 +95,7 @@ r.get('/classify/:i/:r', function(req, res, next) {
                parseFloat(jres[1]) 
         ]
     ).then((jres_)=>{
-        res.json(jres_)
+        res.json({jres_, jres_})
     })
     }) 
 });
