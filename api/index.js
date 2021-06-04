@@ -7,7 +7,7 @@ const cls_model = require('./sdk/cls_model.js'); //classify
 
 // Bot Setting
 const TelegramBot = require('node-telegram-bot-api');
-const token = '1733547356:AAEOX7oG_z09vS34M-DUHOm5YCPsXYDXohg'
+const token = '1875247508:AAFhxF7H51jgGY_PAcF1xK-DOsOQbMr7Qcs'
 const bot = new TelegramBot(token, {polling: true});
 
 state = 0;
@@ -33,25 +33,23 @@ bot.onText(/\/predict/, (msg) => {
 bot.on('message', (msg) => {
     if(state == 1){
         s = msg.text.split("|");
-        i = parseFloat(s[0])
-        r = parseFloat(s[1])
-        
+       
         model.predict(
             [
-               i, 
+             parseFloat(s[0]),
+             parseFloat(s[1]) 
             ]
         ).then((jres1)=>{
-            v = parseFloat(jres1[0])
-            p = parseFloat(jres1[1])
+             console.log(jres1);
             
-            cls_model.classify([i,r,v,p]).then((jres2)=>{
+            cls_model.classify([parseFloat(s[0]),parseFloat(s[1]),parseFloat(jres1[0]),parseFloat(jres1[1])]).then((jres2)=>{
              bot.sendMessage(
                      msg.chat.id,
-                     `nilai v yang diprediksi adalah ${v} volt`
+                     `nilai v yang diprediksi adalah ${jres1[0]} volt`
             );   
             bot.sendMessage(
                     msg.chat.id,
-                    `nilai p yang diprediksi adalah ${p} watt`
+                    `nilai p yang diprediksi adalah ${jres1[1]} watt`
             );     
                  bot.sendMessage(
                      msg.chat.id,
